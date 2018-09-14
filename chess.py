@@ -4,14 +4,16 @@ import os
 import pygame
 
 from settings import Settings
+from board import ChessBoard
 
 
 def run_game():
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.init()
     settings = Settings()
-    screen = pygame.display.set_mode((settings.screen_width,settings.screen_height))
+    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Chess")
+    board = ChessBoard(settings, screen)
 
     while True:
         for event in pygame.event.get():
@@ -19,6 +21,7 @@ def run_game():
                 sys.exit()
 
         screen.fill(settings.bg_color)
+        board.draw()
         pygame.display.flip()
 
 
