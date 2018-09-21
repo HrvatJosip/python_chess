@@ -114,3 +114,53 @@ class ChessBoard:
         row = int((y - self.settings.board_start_y) / self.square_size)
         col = int((x - self.settings.board_start_x) / self.square_size)
         return row, col
+
+    def is_square_empty(self, square_coord):
+        """Check if square on board is empty
+
+            Args:
+                square_coord(int, int): Tuple containing row and column coordinates of a square
+
+            Returns:
+                True if square is empty. False is otherwise
+        """
+        return True if self.get_board_state()[square_coord[0]][square_coord[1]] is None else True
+
+    def is_clear_path(self, from_tuple, to_tuple):
+        """Check is path between 2 squares is clear
+
+            Args:
+                from_tuple(int, int): Tuple containing row and column coordinates of piece about to move
+                to_tuple(int, int): Tuple containing row and column coordinates of piece destination
+
+            Returns:
+                True if path is clear. False if there is another piece between both points
+        """
+        # Store from_tuple coordinates in separate variables
+        (from_square_row, from_square_col) = from_tuple
+        # Store to_tuple coordinates in separate varibles
+        (to_square_row, to_square_col) = to_tuple
+
+        # Generate list of coordinates between both points
+        # Vertical move
+        if from_square_col == to_square_col and from_square_row != to_square_row:
+            coord_list = [(row, to_square_col) for row in
+                          range(min(from_square_row, to_square_row) + 1, max(from_square_row, to_square_row))]
+        # Horizontal move
+        elif from_square_row == to_square_row and from_square_col != to_square_col:
+            coord_list = [(to_square_row, col) for col in
+                          range(min(from_square_col, to_square_col) + 1, max(from_square_col, to_square_col))]
+        # Diagonal move SE and NW
+        elif ((from_square_row < to_square_row and from_square_col < to_square_col) or
+             (from_square_row > to_square_row and from_square_col > to_square_col)):
+            coord_list = [(min(from_square_row, to_square_row) + i, min(from_square_col, to_square_col) + i)
+                          for i in range(1, abs(from_square_row - to_square_row))]
+        # Diagonal move SW and NE
+        else:
+            coord_list = [(min(from_square_row, to_square_row) + i, max(from_square_col, to_square_col) - i)
+                          for i in range(1, abs(from_square_row - to_square_row))]
+        # Check if path is clear
+        for coord in coord_list:
+            if not self.is_square_empty(coord):
+                return False
+        return True
