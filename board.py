@@ -48,45 +48,6 @@ class ChessBoard:
                     current_square = (current_square + 1) % 2
             current_square = (current_square + 1) % 2
 
-    def convert_algebraic_notation(self, square_coord):
-        """Convert coordinate on chessboard to algebraic notation
-        Algebraic notation begins at lower left square 1A (board_squares[7][0])
-
-        Args:
-            square_coord (int, int): Tuple containing row and column coordinate of a square
-
-        Returns:
-            Corresponding algebraic notation coordinate
-        """
-        (row, col) = square_coord
-        return self.convert_algebraic_notation_column(col) + self.convert_algebraic_notation_row(row)
-
-    def convert_algebraic_notation_row(self, row):
-        """Convert row number to algebraic notation
-        Algebraic notation begins at lower left square 1A (board_squares[7][0])
-
-        Args:
-            row(int): row on the chessboard in range 0-7 starting from the top
-
-        Returns:
-            Corresponding algebraic notation row number
-        """
-        number_coord = list(range(1, 9))
-        return str(number_coord[(row + 1) * -1])
-
-    def convert_algebraic_notation_column(self, col):
-        """Convert column number to algebraic notation
-        Algebraic notation begins at lower left square 1A (board_squares[7][0])
-
-        Args:
-            col(int): column on the chessboard in range 0-7 starting from left
-
-        Returns:
-            Corresponding algebraic notation column letter
-        """
-        letter_coord = list(map(chr, range(ord('a'), ord('i'))))
-        return letter_coord[col]
-
     def convert_to_screen_coord(self, square_coord):
         """Convert chess coordinate into coordinate on screen
 
@@ -114,6 +75,17 @@ class ChessBoard:
         row = int((y - self.settings.board_start_y) / self.square_size)
         col = int((x - self.settings.board_start_x) / self.square_size)
         return row, col
+
+    def get_piece_at_square(self, square_coord):
+        """Gets piece at given square
+
+            Args:
+                 square_coord(int, int): Tuple containing row and column of given square
+
+            Returns:
+                Piece object or None
+        """
+        return self.get_board_state()[square_coord[0]][square_coord[1]]
 
     def is_square_empty(self, square_coord):
         """Check if square on board is empty
@@ -152,7 +124,7 @@ class ChessBoard:
                           range(min(from_square_col, to_square_col) + 1, max(from_square_col, to_square_col))]
         # Diagonal move SE and NW
         elif ((from_square_row < to_square_row and from_square_col < to_square_col) or
-             (from_square_row > to_square_row and from_square_col > to_square_col)):
+              (from_square_row > to_square_row and from_square_col > to_square_col)):
             coord_list = [(min(from_square_row, to_square_row) + i, min(from_square_col, to_square_col) + i)
                           for i in range(1, abs(from_square_row - to_square_row))]
         # Diagonal move SW and NE
