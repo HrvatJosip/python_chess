@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class Type(Enum):
+    """Chess piece type Enum"""
     PAWN = 1
     KNIGHT = 2
     BISHOP = 3

@@ -9,3 +9,4 @@ class Settings:
         # Board Settings
         self.board_start_x = 100
         self.board_start_y = 100
+        self.square_size = 50

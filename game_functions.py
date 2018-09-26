@@ -38,3 +38,10 @@ def convert_algebraic_notation_column(col):
     """
     letter_coord = list(map(chr, range(ord('a'), ord('i'))))
     return letter_coord[col]
+
+
+def opponent_color(player_color):
+    if player_color == 'white':
+        return 'black'
+    else:
+        return 'white'

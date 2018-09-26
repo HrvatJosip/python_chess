@@ -1,8 +1,10 @@
 import pygame
+import pickle
+
+from pieces import pawn, bishop, knight, rook, queen, king
 
 
 class ChessBoard:
-
     """Draws and maintains the state of the chess board
 
     Args:
@@ -15,7 +17,6 @@ class ChessBoard:
         board_squares(list): A list representation of pieces on the board
         white_square(obj): Image of a white square used for the board
         black_square(obj): Image of a black square used for the board
-        square_size(int): Size of the squares sides in pixels
     """
 
     def __init__(self, settings, screen):
@@ -24,7 +25,6 @@ class ChessBoard:
         self.board_squares = [[None for column in range(8)] for row in range(8)]
         self.white_square = pygame.image.load('images/white_square.png')
         self.black_square = pygame.image.load('images/black_square.png')
-        self.square_size = self.white_square.get_rect().width
 
     def get_board_state(self):
         """Return state of board as list"""
@@ -46,6 +46,7 @@ class ChessBoard:
                 else:
                     self.screen.blit(self.white_square, (screen_x, screen_y))
                     current_square = (current_square + 1) % 2
+
             current_square = (current_square + 1) % 2
 
     def convert_to_screen_coord(self, square_coord):
@@ -58,8 +59,8 @@ class ChessBoard:
             Screen coordinate of top left corner of chess square
         """
         (row, col) = square_coord
-        screen_x = self.settings.board_start_x + col * self.square_size
-        screen_y = self.settings.board_start_y + row * self.square_size
+        screen_x = self.settings.board_start_x + col * self.settings.square_size
+        screen_y = self.settings.board_start_y + row * self.settings.square_size
         return screen_x, screen_y
 
     def convert_to_chess_coord(self, screen_coord):
@@ -72,8 +73,8 @@ class ChessBoard:
                 Index of chess square within list board_squares
         """
         (x, y) = screen_coord
-        row = int((y - self.settings.board_start_y) / self.square_size)
-        col = int((x - self.settings.board_start_x) / self.square_size)
+        row = int((y - self.settings.board_start_y) / self.settings.square_size)
+        col = int((x - self.settings.board_start_x) / self.settings.square_size)
         return row, col
 
     def get_piece_at_square(self, square_coord):
@@ -110,7 +111,7 @@ class ChessBoard:
         """
         # Store from_tuple coordinates in separate variables
         (from_square_row, from_square_col) = from_tuple
-        # Store to_tuple coordinates in separate varibles
+        # Store to_tuple coordinates in separate variables
         (to_square_row, to_square_col) = to_tuple
 
         # Generate list of coordinates between both points
