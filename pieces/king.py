@@ -24,3 +24,14 @@ class King(Piece):
         self.has_moved = False
         self.image = pygame.image.load('images/'+color+'_king.png')
         self.image = pygame.transform.scale(self.image, (self.settings.square_size, self.settings.square_size))
+
+    def move(self, coord_to_move):
+        """Moves Piece to another square
+
+        Args:
+            coord_to_move(int, int): Tuple containing row and column coordinates of a square
+        """
+        super().move(coord_to_move)
+        # Change flag to moved
+        if not self.has_moved:
+            self.has_moved = True
