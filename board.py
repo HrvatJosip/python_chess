@@ -1,8 +1,6 @@
 import pygame
 import pickle
 
-from pieces import pawn, bishop, knight, rook, queen, king
-
 
 class ChessBoard:
     """Draws and maintains the state of the chess board
@@ -30,8 +28,12 @@ class ChessBoard:
         """Return state of board as list"""
         return self.board_squares
 
+    def set_initial_board(self):
+        with open('new_board.txt', 'rb') as file_obj:
+            self.board_squares = pickle.load(file_obj)
+
     def draw(self):
-        """Draws chess board on screen"""
+        """Draws chess board on screen with pieces"""
         # Get board size in squares across.
         board_size = len(self.get_board_state())
 
@@ -46,7 +48,10 @@ class ChessBoard:
                 else:
                     self.screen.blit(self.white_square, (screen_x, screen_y))
                     current_square = (current_square + 1) % 2
-
+                # Draws piece at square if any
+                if not self.is_square_empty((row, column)):
+                    piece = self.get_board_state()[row][column]
+                    piece.draw(self.screen, screen_x, screen_y)
             current_square = (current_square + 1) % 2
 
     def convert_to_screen_coord(self, square_coord):
@@ -97,7 +102,7 @@ class ChessBoard:
             Returns:
                 True if square is empty. False is otherwise
         """
-        return True if self.get_board_state()[square_coord[0]][square_coord[1]] is None else True
+        return True if self.get_board_state()[square_coord[0]][square_coord[1]] is None else False
 
     def is_clear_path(self, from_tuple, to_tuple):
         """Check is path between 2 squares is clear
