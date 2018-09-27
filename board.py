@@ -48,6 +48,7 @@ class ChessBoard:
                 else:
                     self.screen.blit(self.white_square, (screen_x, screen_y))
                     current_square = (current_square + 1) % 2
+
                 # Draws piece at square if any
                 if not self.is_square_empty((row, column)):
                     piece = self.get_board_state()[row][column]
