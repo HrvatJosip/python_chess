@@ -14,6 +14,7 @@ def run_game():
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Chess")
     board = ChessBoard(settings, screen)
+    board.set_initial_board()
 
     while True:
         for event in pygame.event.get():
