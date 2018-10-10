@@ -1,3 +1,6 @@
+import sys
+import pygame
+
 def convert_algebraic_notation(square_coord):
     """Convert coordinate on chessboard to algebraic notation
     Algebraic notation begins at lower left square 1A (board_squares[7][0])
@@ -45,3 +48,20 @@ def opponent_color(player_color):
         return 'black'
     else:
         return 'white'
+
+
+def check_events(board):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            (mouse_x, mouse_y) = pygame.mouse.get_pos()
+            square_clicked = board.convert_to_chess_coord((mouse_x, mouse_y))
+            if square_clicked[0] < 0 or square_clicked[0] > 7 or square_clicked[1] < 0 or square_clicked[1] > 7:
+                square_clicked = []
+    return square_clicked
+
+
+
+
+

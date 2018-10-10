@@ -5,6 +5,7 @@ import pygame
 
 from settings import Settings
 from board import ChessBoard
+import game_functions as gf
 
 
 def run_game():
@@ -17,10 +18,7 @@ def run_game():
     board.set_initial_board()
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
+        gf.check_events(board)
         screen.fill(settings.bg_color)
         board.draw()
         pygame.display.flip()
