@@ -23,6 +23,7 @@ class ChessBoard:
         self.board_squares = [[None for column in range(8)] for row in range(8)]
         self.white_square = pygame.image.load('images/white_square.png')
         self.black_square = pygame.image.load('images/black_square.png')
+        self.pieces_on_board = []
 
     def get_board_state(self):
         """Return state of board as list"""
@@ -31,6 +32,7 @@ class ChessBoard:
     def set_initial_board(self):
         with open('new_board.txt', 'rb') as file_obj:
             self.board_squares = pickle.load(file_obj)
+            self.pieces_on_board = [piece for row in self.board_squares for piece in row if piece is not None]
 
     def draw(self):
         """Draws chess board on screen with pieces"""
@@ -53,6 +55,7 @@ class ChessBoard:
                 if not self.is_square_empty((row, column)):
                     piece = self.get_board_state()[row][column]
                     piece.draw(self.screen, screen_x, screen_y)
+
             current_square = (current_square + 1) % 2
 
     def convert_to_screen_coord(self, square_coord):
@@ -103,7 +106,7 @@ class ChessBoard:
             Returns:
                 True if square is empty. False is otherwise
         """
-        return True if self.get_board_state()[square_coord[0]][square_coord[1]] is None else False
+        return True if self.get_piece_at_square(square_coord) is None else False
 
     def is_clear_path(self, from_tuple, to_tuple):
         """Check is path between 2 squares is clear
@@ -143,3 +146,16 @@ class ChessBoard:
             if not self.is_square_empty(coord):
                 return False
         return True
+
+    def move_piece(self, move_tuple):
+        from_tuple = move_tuple[0]
+        to_tuple = move_tuple[1]
+
+        from_piece = self.get_piece_at_square(from_tuple)
+        to_piece = self.get_piece_at_square(to_tuple)
+
+        from_piece.move(to_tuple)
+        self.get_board_state()[from_tuple[0]][from_tuple[1]] = None
+
+        if to_piece:
+            self.pieces_on_board.remove(to_piece)

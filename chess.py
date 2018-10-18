@@ -19,6 +19,7 @@ def run_game():
 
     while True:
         gf.check_events(board)
+        gf.update_board(board)
         screen.fill(settings.bg_color)
         board.draw()
         pygame.display.flip()

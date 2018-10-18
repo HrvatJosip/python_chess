@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+
 def convert_algebraic_notation(square_coord):
     """Convert coordinate on chessboard to algebraic notation
     Algebraic notation begins at lower left square 1A (board_squares[7][0])
@@ -59,7 +60,12 @@ def check_events(board):
             square_clicked = board.convert_to_chess_coord((mouse_x, mouse_y))
             if square_clicked[0] < 0 or square_clicked[0] > 7 or square_clicked[1] < 0 or square_clicked[1] > 7:
                 square_clicked = []
-    return square_clicked
+
+
+def update_board(board):
+    for piece in board.pieces_on_board:
+        board.get_board_state()[piece.get_row()][piece.get_col()] = piece
+
 
 
 
